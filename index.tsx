@@ -303,23 +303,23 @@ const Display: React.FC<{ expression: string; result: string; preview: string; l
   }, [expression]);
 
   return (
-    <div className="w-full flex-1 flex flex-col justify-end items-end p-6 pb-2 space-y-1 min-h-[180px]">
+    <div className="w-full flex-1 flex flex-col justify-end items-end p-6 pb-4 space-y-1 min-h-[25vh] md:min-h-[220px]">
       <div 
         ref={scrollRef}
         className="w-full overflow-x-auto no-scrollbar text-right whitespace-nowrap"
       >
-        <span className={`text-gray-800 dark:text-white font-semibold tracking-wide font-sans transition-all duration-300 ${result ? 'text-4xl opacity-70' : 'text-6xl'}`}>
+        <span className={`text-gray-800 dark:text-white font-semibold tracking-wide font-sans transition-all duration-300 ${result ? 'text-4xl md:text-5xl opacity-70' : 'text-6xl md:text-7xl'}`}>
           {localize(expression, lang) || localize('0', lang)}
         </span>
       </div>
       
-      <div className="w-full text-right overflow-hidden text-ellipsis h-16">
+      <div className="w-full text-right overflow-hidden text-ellipsis h-16 md:h-20">
         {result ? (
-          <span className="text-6xl font-bold text-brand-orange animate-slide-up font-sans block">
+          <span className="text-6xl md:text-7xl font-bold text-brand-orange animate-slide-up font-sans block">
             = {localize(result, lang)}
           </span>
         ) : preview ? (
-          <span className="text-4xl font-medium text-gray-400 dark:text-gray-500 font-sans block transition-opacity duration-200">
+          <span className="text-4xl md:text-5xl font-medium text-gray-400 dark:text-gray-500 font-sans block transition-opacity duration-200">
             {localize(preview, lang)}
           </span>
         ) : null}
@@ -339,7 +339,7 @@ interface ButtonProps {
 const Button: React.FC<ButtonProps> = ({ label, onClick, variant = 'number', className = '', disabled }) => {
   const [isPressed, setIsPressed] = useState(false);
 
-  let baseStyle = "rounded-xl text-2xl md:text-3xl font-bold flex items-center justify-center transition-all duration-100 select-none h-14 md:h-16 active:scale-90 active:shadow-inner";
+  let baseStyle = "rounded-2xl text-2xl md:text-3xl font-bold flex items-center justify-center transition-all duration-100 select-none h-auto aspect-[5/4] md:aspect-[4/3] active:scale-95 active:shadow-inner";
   let colorStyle = "";
 
   if (disabled) {
@@ -352,19 +352,19 @@ const Button: React.FC<ButtonProps> = ({ label, onClick, variant = 'number', cla
 
   switch (variant) {
     case 'number':
-      colorStyle = "bg-gray-100 text-gray-900 hover:bg-gray-200 dark:bg-[#1c1c1c] dark:text-white dark:hover:bg-[#2d2d2d] shadow-sm";
+      colorStyle = "bg-gray-100 text-gray-900 hover:bg-gray-200 dark:bg-[#1c1c1c] dark:text-white dark:hover:bg-[#2d2d2d] shadow-sm hover:shadow-md";
       break;
     case 'operator':
-      colorStyle = "bg-gray-100 text-brand-orange hover:bg-gray-200 dark:bg-[#1c1c1c] dark:text-[#ff9f0a] dark:hover:bg-[#2d2d2d] shadow-sm";
+      colorStyle = "bg-gray-100 text-brand-orange hover:bg-gray-200 dark:bg-[#1c1c1c] dark:text-[#ff9f0a] dark:hover:bg-[#2d2d2d] shadow-sm hover:shadow-md";
       break;
     case 'action':
-      colorStyle = "bg-gray-200 text-brand-orange hover:bg-gray-300 dark:bg-[#1c1c1c] dark:text-[#ff9f0a] dark:hover:bg-[#2d2d2d] shadow-sm"; 
+      colorStyle = "bg-gray-200 text-brand-orange hover:bg-gray-300 dark:bg-[#1c1c1c] dark:text-[#ff9f0a] dark:hover:bg-[#2d2d2d] shadow-sm hover:shadow-md"; 
       break;
     case 'accent':
       colorStyle = "bg-[#ff9f0a] text-white hover:bg-[#ffb03b] shadow-md shadow-orange-500/20"; 
       break;
     case 'scientific':
-      colorStyle = "bg-gray-100 text-brand-orange hover:bg-gray-200 dark:bg-[#1c1c1c] dark:text-[#ff9f0a] dark:hover:bg-[#2d2d2d] text-lg font-bold shadow-sm";
+      colorStyle = "bg-gray-100 text-brand-orange hover:bg-gray-200 dark:bg-[#1c1c1c] dark:text-[#ff9f0a] dark:hover:bg-[#2d2d2d] text-lg font-bold shadow-sm hover:shadow-md aspect-video";
       break;
   }
 
@@ -409,7 +409,7 @@ const Header: React.FC<{
   }, []);
 
   return (
-    <div className="flex flex-col w-full pt-4 px-4 bg-white dark:bg-black transition-colors z-30">
+    <div className="flex flex-col w-full pt-4 px-6 bg-white dark:bg-black transition-colors z-30">
       
       {/* Top Bar with Controls */}
       <div className="flex justify-between items-center mb-2">
@@ -446,7 +446,7 @@ const Header: React.FC<{
         <div className="flex items-center gap-2">
            <button 
             onClick={toggleScientific}
-            className="p-2 rounded-full bg-gray-100 dark:bg-[#1c1c1c] text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-[#2d2d2d] transition-colors shadow-sm md:hidden"
+            className="p-2 rounded-full bg-gray-100 dark:bg-[#1c1c1c] text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-[#2d2d2d] transition-colors shadow-sm"
             aria-label="Toggle Scientific"
           >
             <FlaskConical size={20} />
@@ -504,10 +504,10 @@ const Header: React.FC<{
 
 const HistoryView: React.FC<{ history: HistoryItem[]; onClose: () => void; onLoad: (item: HistoryItem) => void; onClear: () => void; lang: LanguageCode }> = ({ history, onClose, onLoad, onClear, lang }) => {
   return (
-    <div className="absolute inset-0 bg-white/95 dark:bg-black/95 z-50 flex flex-col p-6 animate-fade-in backdrop-blur-sm">
+    <div className="absolute inset-0 bg-white/95 dark:bg-black/95 z-50 flex flex-col p-6 animate-fade-in backdrop-blur-md rounded-none md:rounded-[2.5rem]">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-800 dark:text-white">{LANGUAGES[lang].translations.history}</h2>
-        <button onClick={onClose} className="p-2 bg-gray-100 dark:bg-[#1c1c1c] rounded-full text-gray-800 dark:text-white">
+        <button onClick={onClose} className="p-2 bg-gray-100 dark:bg-[#1c1c1c] rounded-full text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-[#2d2d2d] transition-colors">
           <X size={24} />
         </button>
       </div>
@@ -718,7 +718,7 @@ const Calculator: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-full max-w-lg mx-auto bg-white dark:bg-black transition-colors duration-300 relative">
+    <div className="flex flex-col h-full w-full bg-white dark:bg-black transition-colors duration-300 relative rounded-none md:rounded-[2.5rem] overflow-hidden border-0 md:border md:border-gray-200 md:dark:border-gray-800 md:shadow-2xl">
       <Header 
         activeTab={activeTab} 
         onTabChange={(tab) => { setActiveTab(tab); setConvCategory(null); }}
@@ -747,7 +747,7 @@ const Calculator: React.FC = () => {
       )}
 
       {/* Grid Container */}
-      <div className="p-4 pb-8 grid grid-cols-4 gap-3 flex-none bg-white dark:bg-black z-10 transition-colors">
+      <div className="p-4 pb-8 md:p-6 md:pb-8 grid grid-cols-4 gap-2 md:gap-4 flex-none bg-white dark:bg-black z-10 transition-colors">
         
         {/* Row 1 */}
         <Button label={LANGUAGES[lang].translations.clear} variant="action" onClick={() => handleKeypadClick('AC')} className="text-lg" />
@@ -854,8 +854,8 @@ const Calculator: React.FC = () => {
 
 const App: React.FC = () => {
   return (
-    <div className="h-full w-full bg-white dark:bg-black flex items-center justify-center">
-      <div className="w-full h-full max-w-md bg-white dark:bg-black shadow-2xl overflow-hidden">
+    <div className="h-screen w-screen bg-white dark:bg-black md:bg-gray-50 md:dark:bg-[#111] flex items-center justify-center transition-colors duration-300">
+      <div className="w-full h-full md:max-w-md md:h-[85vh] md:max-h-[900px] relative">
         <Calculator />
       </div>
     </div>
